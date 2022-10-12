@@ -21,6 +21,9 @@ class Record:
     Name = Name(name)
     Phone = Phone(phone)
 
+    def delete(self, value):
+        address_book.data.pop(value)
+
 
 class AddressBook(UserDict):
     def add_record(self, record):
@@ -36,7 +39,7 @@ def input_error(func):
         try:
             return func(*args, **kwargs)
         except IndexError:
-            return "Please enter name and phone number or name whose phone you want to see"
+            return "Please enter name and phone of the user or only its name"
         except ValueError:
             return "Wrong input"
         except TypeError:
@@ -85,6 +88,17 @@ def phone(data):
 
 
 @input_error
+def delete(data):
+    name_ = data.strip().split(" ")[1]
+
+    if name_ not in address_book.data:
+        return f"{name_} doesn't have a number, you can't delete it"
+    else:
+        Record().delete(name_)
+        return f"User {name_} was deleted"
+
+
+@input_error
 def change(data):
     name_ = data.strip().split(" ")[1]
     phone_ = data.strip().split(" ")[2]
@@ -105,7 +119,8 @@ COMMANDS = {"hello": say_hello,
             "add": add,
             "phone": phone,
             "change": change,
-            "show all": show_all}
+            "show all": show_all,
+            "delete": delete}
 
 
 def handler(comm):
@@ -119,7 +134,7 @@ def main():
         if user_command.lower() == "hello" or user_command.lower() == "show all":
             print(handler(user_command.lower())())
 
-        elif user_command.split(" ")[0].lower() not in ["change", "phone", "add", "exit", "close", "goodbye"]:
+        elif user_command.split(" ")[0].lower() not in ["change", "phone", "add", "exit", "close", "goodbye", "delete"]:
             print("No such a command")
 
         elif user_command.lower() in ["exit", "close", "goodbye"]:
