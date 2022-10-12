@@ -24,6 +24,9 @@ class Record:
     def delete(self, value):
         address_book.data.pop(value)
 
+    def change(self, key, value):
+        address_book[key] = value
+
 
 class AddressBook(UserDict):
     def add_record(self, record):
@@ -102,16 +105,13 @@ def delete(data):
 def change(data):
     name_ = data.strip().split(" ")[1]
     phone_ = data.strip().split(" ")[2]
-    record = Record()
-    record.name = name_
-    record.phone = phone_
 
     if name_ not in address_book.data:
         return f"{name_} doesn't have a number, call 'add' command to add this user"
     elif not phone_.isnumeric():
         return f"{phone_} isn't a right input,enter a numeric one"
     else:
-        address_book.add_record(record)
+        Record().change(name_, phone_)
         return f"{name_}'s phone number was changed to {phone_}"
 
 
