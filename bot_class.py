@@ -16,22 +16,16 @@ class Phone:
 
 
 class Record:
-    def __init__(self, name=None, phone=None):
-        if phone == None:
-            self.name = Name(name)
+    def __init__(self, name, phone=None):
+        self.name = Name(name)
+        if phone:
+            self.phones = [Phone(phone)]
         else:
-            self.name = Name(name)
-            self.phone = Phone(phone)
-
-    def __str__(self):
-        try:
-            return f"{self.name.value}--{self.phone.value}"
-        except AttributeError:
-            return f"{self.name.value}"
+            self.phones = []
 
     def change(self, name, info):
         record = Record(name, info)
-        address_book.data[record.name.value] = record.__str__()
+        address_book.data[record.name.value] = record
 
     def delete(self, name):
         address_book.data.pop(name)
@@ -42,7 +36,7 @@ class Record:
 
 class AddressBook(UserDict):
     def add_record(self, record):
-        self.data[record.name.value] = record.__str__()
+        self.data[record.name.value] = record
         return self.data
 
 
