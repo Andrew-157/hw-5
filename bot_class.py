@@ -23,8 +23,7 @@ class Record:
         else:
             self.phones = []
 
-    def change(self, name, info):
-        record = Record(name, info)
+    def change(self, record):
         address_book.data[record.name.value] = record
 
     def delete(self, name):
@@ -106,12 +105,12 @@ def delete(data):
     name_ = data.strip().split(" ")[1]
 
     if name_.lower() == "all":
-        Record().delete_all()
+        Record(name_).delete_all()
         return "All information was deleted."
     elif name_ not in address_book.data:
         return f"{name_} doesn't have any information, you can't delete it"
     else:
-        Record().delete(name_)
+        Record(name_).delete(name_)
         return f"{name_} was deleted"
 
 
@@ -126,7 +125,8 @@ def change(data):
             return "Enter the name with its new values"
         else:
             info = data.split(" ")[2:]
-            Record().change(name_, info)
+            record = Record(name_, info)
+            record.change(record)
             return f"{name_}'s information was changed to {info}"
 
 
